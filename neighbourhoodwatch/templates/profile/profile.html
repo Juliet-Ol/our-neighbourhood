@@ -1,0 +1,19 @@
+{%extends "neighbourhoodwatch/base.html"%}
+{% load bootstrap5 %}
+{% block content %}
+
+<div class="content-section" >
+    <div class="static">
+        <a href="/edit-profile"> Edit Profile </a>
+        <img class="rounded-circle account-img" style="width: 10%;" src=" {{ profile.image.url }} " alt="">
+        <div class="static-body">
+            <h2 class="account-heading"> {{ profile.name }} </h2>
+            <p class="test-secondary"> {{profile.id }} </p>
+            <p class="test-secondary"> {{profile.email }} </p>
+            <p class="test-secondary"> {{profile.bio }} </p>
+        </div>    
+    </div>
+</div>
+
+
+{% endblock content%}
