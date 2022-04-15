@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
+from cloudinary.models import CloudinaryField
 
 
 
@@ -17,7 +18,33 @@ class Profile(models.Model):
     bio = models.TextField(max_length=300, default='') 
 
     def __str__(self):
-        return f'{self.user.username} Profile'    
+        return f'{self.user.username} Profile'  
+
+class Post (models.Model):
+    title = models.CharField(max_length=20)
+    picture = CloudinaryField('image')
+    post = models.CharField(max_length=100)
+    author = models.ForeignKey(User, on_delete = models.CASCADE)
+    published_date = models.DateTimeField(auto_now_add=True)
+    # neighbourhood = models.ForeignKey(Neighbourhood, on_delete = models.CASCADE, primary_key=True)
+    
+
+    class Meta:
+        ordering = ['-published_date']  
+
+    @classmethod
+    def display(cls):
+        posts = cls.objects.all()
+        return posts
+
+    def save_posts(self):
+        self.user
+    def delete_posts(self):
+        self.delete()
+    @classmethod
+    def search_projects(cls, name):
+        return cls.objects.filter(title__icontains=name).all() 
+
 
          
     
