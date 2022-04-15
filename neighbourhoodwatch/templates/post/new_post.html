@@ -20,7 +20,7 @@
     <div class="col-md-4">
       
     </div>
-    <div class="col-md-4">
+    <div class="col-md-6">
       <!-- {% if form.errors %}
         <p> Information Might be Incorrect </p>
       {% endif %} -->
@@ -36,6 +36,7 @@
           {% endif %}
         </div>
         <div class="panel-body">
+          <div class="shadow-lg p-3 mb-5 bg-white rounded" >
 
           <form  method="post" action="/post" enctype="multipart/form-data" >
             {% csrf_token %}
@@ -51,6 +52,7 @@
 
         </div>
 
+      </div>
       </div>
 
     </div>
