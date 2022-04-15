@@ -1,18 +1,21 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib import messages
-from .models import Profile
+from .models import Profile, Post
 from django.contrib.auth.decorators import login_required
 
-from .forms import ProfileForm
+from .forms import PostForm, ProfileForm
 
 # Create your views here.
 
 def index(request):
     profile_form=ProfileForm
+    post_form=PostForm
+    post=Post
+    post=Post.display()
 
 
-    return render(request, 'neighbourhoodwatch/index.html', {"profile_form":profile_form})
+    return render(request, 'neighbourhoodwatch/index.html', {"profile_form":profile_form, "post_form":post_form, "posts":post})
 
 
 
@@ -75,4 +78,27 @@ def profile(request):
             profile.save()
         else:
             profile= request.user.profile 
-        return render(request, 'profile/profile.html', {'form': form, 'profile':profile})    
+        return render(request, 'profile/profile.html', {'form': form, 'profile':profile})  
+
+def post(request):
+    form = PostForm
+    current_user = request.user
+    if request.method == 'POST':
+        print(request.POST['post'])
+        form = PostForm(request.POST, request.FILES)
+        
+        if form.is_valid():
+            post = Post()
+            post.title = form.cleaned_data['title']
+            post.post = form.cleaned_data['post']
+            post.author = current_user
+            post.picture = form.cleaned_data['picture']
+            post.save()
+            messages.success(request, 'Posted')
+
+            return redirect ('index')
+        else:
+            return render(request, 'post/new_post.html', {'form': form})
+
+    else:
+        return render(request, 'post/new_post.html', {'form': form})            

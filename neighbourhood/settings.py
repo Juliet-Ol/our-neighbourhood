@@ -13,6 +13,10 @@ https://docs.djangoproject.com/en/4.0/ref/settings/
 from pathlib import Path
 import os
 
+import cloudinary
+import cloudinary.uploader
+import cloudinary.api
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -39,7 +43,9 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'neighbourhoodwatch',
-    'bootstrap5'
+    'bootstrap5',
+    'tailwind',
+    'cloudinary',
 ]
 
 MIDDLEWARE = [
@@ -141,3 +147,10 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 LOGIN_REDIRECT_URL='index'
 LOGOUT_REDIRECT_URL='login'
+
+
+cloudinary.config( 
+  cloud_name = "dkcivjz16", 
+  api_key = "471245994175868", 
+  api_secret = "CAS-yrgWOfJHRN1IYD58181C8Sw", 
+)
