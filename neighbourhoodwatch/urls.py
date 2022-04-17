@@ -12,6 +12,7 @@ urlpatterns = [
     path('edit-profile', views.editProfile, name='edit-profile'),
     path('post', views.post, name='new-post'),
     path('post', views.PostForm, name='post-form'),
+    path('view-post/<int:id>', views.viewPost, name="view-post"),
 ]
 if settings.DEBUG:
     urlpatterns+= static(settings.MEDIA_URL, document_root = settings.MEDIA_ROOT)
