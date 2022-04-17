@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import get_object_or_404, render, redirect
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib import messages
 from .models import Profile, Post
@@ -101,4 +101,14 @@ def post(request):
             return render(request, 'post/new_post.html', {'form': form})
 
     else:
-        return render(request, 'post/new_post.html', {'form': form})            
+        return render(request, 'post/new_post.html', {'form': form})    
+
+
+def viewPost(request, id):
+    post = get_object_or_404(Post, pk=id)
+    
+
+    return render(request, 'neighbourhoodwatch/show.html', {
+        'post': post,
+       
+    }) 
