@@ -2,16 +2,26 @@ from django.db import models
 from django.contrib.auth.models import User
 from cloudinary.models import CloudinaryField
 
-
-
-    
+class Neighbourhood(models.Model):
+    name= models.CharField(max_length=100, blank=False)
+    location = models.CharField(max_length=100, blank=False)
+    housenumber =models.CharField(max_length=100, blank=False)
+    admin = models.ForeignKey('Profile',
+        on_delete=models.CASCADE,
+        related_name='neighbour',
+        null='True',
+        blank=True,
+        default='')
+    police = models.IntegerField(blank=True)
+    hospital = models.IntegerField(blank=True)  
+        
 
 
 
 class Profile(models.Model):
     name =models.CharField(max_length=50, blank=True)  
-    id = models.CharField(max_length=50, blank=True, primary_key=True)
-    # neighbourhood = models.ForeignKey(Neighbourhood, on_delete = models.CASCADE, primary_key=True)
+    identiy_number = models.CharField(max_length=50, blank=True, primary_key=True)
+    neighbourhood = models.ForeignKey(Neighbourhood, on_delete = models.CASCADE, default='')
     email = models.EmailField(null=True) 
     user = models.OneToOneField(User, on_delete=models.CASCADE, default='')
     image = models.ImageField(default='default.jpg', upload_to='profile_pics')
