@@ -1,5 +1,11 @@
 from django import forms
-from .models import Post, Profile
+from .models import Post, Profile, Neighbourhood
+
+class NeighbourhoodForm(forms.ModelForm):
+    class Meta:
+        model = Neighbourhood
+        
+        fields = '__all__'
 
 class ProfileForm(forms.ModelForm):
     class Meta:
