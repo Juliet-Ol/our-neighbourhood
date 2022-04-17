@@ -1,6 +1,9 @@
+import email
 from django.db import models
 from django.contrib.auth.models import User
 from cloudinary.models import CloudinaryField
+
+# from neighbourhoodwatch.views import neighbourhood
 
 class Neighbourhood(models.Model):
     name= models.CharField(max_length=100, blank=False)
@@ -36,7 +39,7 @@ class Post (models.Model):
     post = models.CharField(max_length=100)
     author = models.ForeignKey(User, on_delete = models.CASCADE)
     published_date = models.DateTimeField(auto_now_add=True)
-    # neighbourhood = models.ForeignKey(Neighbourhood, on_delete = models.CASCADE, primary_key=True)
+    neighbourhood = models.ForeignKey(Neighbourhood, on_delete = models.CASCADE, default='')
     
 
     class Meta:
@@ -54,6 +57,13 @@ class Post (models.Model):
     @classmethod
     def search_projects(cls, name):
         return cls.objects.filter(title__icontains=name).all() 
+
+
+class Business(models.Model):
+    business_name = models.CharField(max_length=50)
+    neighbourhood = models.ForeignKey(Neighbourhood, on_delete = models.CASCADE, default='')
+    user = models.ForeignKey(User, on_delete=models.CASCADE, default='')
+    email = models.EmailField(null=True)        
 
 
          

@@ -1,5 +1,5 @@
 from django import forms
-from .models import Post, Profile, Neighbourhood
+from .models import Business, Post, Profile, Neighbourhood
 
 class NeighbourhoodForm(forms.ModelForm):
     class Meta:
@@ -19,3 +19,9 @@ class PostForm(forms.ModelForm):
         model = Post
         exclude = ['author', 'published_date']
         fields = '__all__'       
+
+class BusinessForm(forms.ModelForm):
+    class Meta:
+        model = Business
+        
+        fields = '__all__'               
