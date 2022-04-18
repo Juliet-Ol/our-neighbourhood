@@ -30,7 +30,9 @@ class Neighbourhood(models.Model):
         self.delete()
     @classmethod
     def find_neighborhood(cls, neighborhood_id):
-        return cls.objects.filter(id=neighborhood_id)    
+        return cls.objects.filter(id=neighborhood_id)   
+        
+         
         
 
 
@@ -56,7 +58,7 @@ class Post (models.Model):
     post = models.CharField(max_length=100)
     author = models.ForeignKey(User, on_delete = models.CASCADE)
     published_date = models.DateTimeField(auto_now_add=True)
-    neighbourhood = models.ForeignKey(Neighbourhood, on_delete = models.CASCADE, default='')
+    neighbourhood = models.ForeignKey(Neighbourhood, on_delete = models.SET_NULL, null=True, blank=True)
     
 
     class Meta:
