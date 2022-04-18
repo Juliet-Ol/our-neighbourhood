@@ -1,10 +1,12 @@
 from django.shortcuts import get_object_or_404, render, redirect
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib import messages
-from .models import Profile, Post
+
+import neighbourhoodwatch
+from .models import Business, Neighbourhood, Profile, Post
 from django.contrib.auth.decorators import login_required
 
-from .forms import PostForm, ProfileForm
+from .forms import BusinessForm, NeighbourhoodForm, PostForm, ProfileForm
 
 # Create your views here.
 
@@ -13,9 +15,11 @@ def index(request):
     post_form=PostForm
     post=Post
     post=Post.display()
+    business_form=BusinessForm
+    business=Business
 
 
-    return render(request, 'neighbourhoodwatch/index.html', {"profile_form":profile_form, "post_form":post_form, "posts":post})
+    return render(request, 'neighbourhoodwatch/index.html', {"profile_form":profile_form, "post_form":post_form, "posts":post, "business_form":business_form, "business":business})
 
 
 
@@ -34,8 +38,12 @@ def register(request):
 
     else:
         return render(request, 'registration/registration_form.html', {'form': form})
-        
-@login_required(login_url='login')
+
+
+  
+
+
+
 def editProfile(request):
     profile=Profile.objects.get(user= request.user.id)
 
@@ -50,17 +58,20 @@ def profile(request):
 
     if request.method == 'POST':
         form = ProfileForm(request.POST, request.FILES)
-             
+        # Profile.objects.filter(id__gt=1)
+        
         profile=Profile.objects.get(user= request.user.id)
        
         if form.is_valid():
 
-          
+            
+
             profile.image=form.cleaned_data['image'] if len(request.FILES) != 0 else profile.image
             profile.name=form.cleaned_data['name']  
-            # profile.id= form.cleaned_data['id']            
+            profile.bio=form.cleaned_data['bio'] 
             profile.email=form.cleaned_data['email'] 
-            profile.bio=form.cleaned_data['bio']             
+
+           
             profile.save()
 
            
@@ -78,7 +89,9 @@ def profile(request):
             profile.save()
         else:
             profile= request.user.profile 
-        return render(request, 'profile/profile.html', {'form': form, 'profile':profile})  
+        return render(request, 'profile/profile.html', {'form': form, 'profile':profile})   
+        
+
 
 def post(request):
     form = PostForm
@@ -112,3 +125,22 @@ def viewPost(request, id):
         'post': post,
        
     }) 
+
+
+
+
+
+
+
+
+
+   
+            
+      
+        
+      
+
+
+
+        
+
