@@ -22,6 +22,11 @@
               
               <p class="card-text">{{ post.published_date }}</p>
               </div>
+
+
+              {% if post.author.id == user.id %}
+              <a href="{% url 'edit-post' post.id %}">Edit Post</a>
+              {% endif %}
                
         </div>
     </div>        
