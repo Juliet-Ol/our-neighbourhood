@@ -2,11 +2,11 @@ from django.shortcuts import get_object_or_404, render, redirect
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib import messages
 
-import neighbourhoodwatch
+
 from .models import Business, Neighbourhood, Profile, Post
 from django.contrib.auth.decorators import login_required
 
-from .forms import BusinessForm, NeighbourhoodForm, PostForm, ProfileForm
+from .forms import BusinessForm,  PostForm, ProfileForm
 
 # Create your views here.
 
@@ -14,7 +14,12 @@ def index(request):
     profile_form=ProfileForm
     post_form=PostForm
     post=Post
-    post=Post.display()
+    if not request.user.profile.neighbourhood:
+        post = []
+    else:
+        currentNeighbourhoodId = request.user.profile.neighbourhood.id
+        post=Post.display(currentNeighbourhoodId)
+    
     business_form=BusinessForm
     business=Business
 
@@ -29,7 +34,14 @@ def register(request):
     if request.method == 'POST':
         form = UserCreationForm(request.POST)
         if form.is_valid():
-            form.save()
+            user = form.save()
+   
+            profile = Profile()
+            profile.name = form.cleaned_data['username']
+            profile.neighbourhood = None
+            profile.user = user
+            profile.save()
+
             messages.success(request, 'User has been registered')
 
             return redirect ('/accounts/login')
@@ -40,6 +52,32 @@ def register(request):
         return render(request, 'registration/registration_form.html', {'form': form})
 
 
+def neighbourhoods(request):
+    neighbourhoods = Neighbourhood.objects.all()
+    # neighbourhoods = neighbourhoods[len(neighbourhoods)-1]
+    context = {
+        'neighbourhoods': neighbourhoods,
+    }
+    print()
+    print(neighbourhoods)
+    return render(request, 'hoody/hood.html', context)        
+
+
+
+
+def join_neighbourhood(request, id):
+    neighbourhood = get_object_or_404(Neighbourhood, pk=id)
+    print(request.user)
+    request.user.profile.neighbourhood = neighbourhood
+    request.user.profile.save()
+    return redirect('/hood')
+
+
+def leave_neighbourhood(request, id):
+    neighbourhood = get_object_or_404(Neighbourhood, pk=id)
+    request.user.profile.neighbourhood = None
+    request.user.profile.save()
+    return redirect('/hood')
   
 
 
@@ -93,11 +131,13 @@ def profile(request):
         
 
 
+
+
 def post(request):
     form = PostForm
     current_user = request.user
     if request.method == 'POST':
-        print(request.POST['post'])
+        
         form = PostForm(request.POST, request.FILES)
         
         if form.is_valid():
@@ -106,6 +146,7 @@ def post(request):
             post.post = form.cleaned_data['post']
             post.author = current_user
             post.picture = form.cleaned_data['picture']
+            post.neighbourhood = request.user.profile.neighbourhood
             post.save()
             messages.success(request, 'Posted')
 
@@ -116,6 +157,26 @@ def post(request):
     else:
         return render(request, 'post/new_post.html', {'form': form})    
 
+def editPost(request, id):
+    post = get_object_or_404(Post, pk=id)
+    form = PostForm(instance=post)
+    if request.method == 'POST':
+        print(request.POST['post'])
+        form = PostForm(request.POST, request.FILES)
+        
+        if form.is_valid():
+            post.title = form.cleaned_data['title']
+            post.post = form.cleaned_data['post']
+            post.picture = form.cleaned_data['picture']
+            post.save()
+            messages.success(request, 'Posted')
+
+            return redirect ('index')
+        else:
+            return render(request, 'post/edit_post.html', {'form': form, 'postId': post.id})
+
+    else:
+        return render(request, 'post/edit_post.html', {'form': form, 'postId': post.id})    
 
 def viewPost(request, id):
     post = get_object_or_404(Post, pk=id)
@@ -131,6 +192,64 @@ def viewPost(request, id):
 
 
 
+def business(request):
+    form = BusinessForm
+    current_user = request.user
+    if request.method == 'POST':
+       
+        form = BusinessForm(request.POST, request.FILES)
+        
+        if form.is_valid():
+            business = Business()
+            business.business_name = form.cleaned_data['business_name']
+            business.email = form.cleaned_data['email']
+            business.user = current_user
+            business.picture = form.cleaned_data['picture']
+            business.neighbourhood = request.user.profile.neighbourhood
+            business.save()
+            messages.success(request, 'Business registered')
+
+            return redirect ('index')
+        else:
+            return render(request, 'business/new_business.html', {'form': form})
+
+    else:
+        return render(request, 'business/new_business.html', {'form': form})    
+
+def editBusiness(request, id):
+    business = get_object_or_404(Business, pk=id)
+    form = BusinessForm(instance=business)
+    if request.method == 'POST':
+        
+        form = BusinessForm(request.POST, request.FILES)
+        
+        if form.is_valid():
+            business.business_name = form.cleaned_data['business_name']
+            business.user = form.cleaned_data['user']
+            business.picture = form.cleaned_data['picture']
+            business.save()
+            messages.success(request, 'Business edited')
+
+            return redirect ('index')
+        else:
+            return render(request, 'business/edit_business.html', {'form': form, 'businessId': business.id})
+
+    else:
+        return render(request, 'business/edit_business.html', {'form': form, 'businessId': business.id})    
+
+
+# def viewBusiness(request, id):
+#     business = get_object_or_404(Business, pk=id)
+    
+
+#     return render(request, 'neighbourhoodwatch/show.html', {
+#         'business': business,
+       
+#     }) 
+
+
+
+    
 
 
 
