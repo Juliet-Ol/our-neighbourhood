@@ -16,18 +16,32 @@
 
               <a class="nav-link" href="profile"> Profile for {{user}} </a>
            </li>
+           <li class="nav-item">   
+
+            <a class="nav-link" href="new_business"> Business {{user}} </a>
+         </li>
 
            <li class="nav-item">
             <a class="nav-link" href="accounts/logout"> Logout </a>
           </li>
-           
+          <li class="nav-item">
+            {% if user.profile.neighbourhood %}
+            <a class="nav-link active" aria-current="page" href="hood"> Switch Neighbourhood ({{ user.profile.neighbourhood.name }}) </a>
+            {% else %}
+            <a class="nav-link active" aria-current="page" href="hood"> Select Neighbourhood </a>
+            {% endif %}
+          </li>
            {% else %}
+           <li class="nav-item">
+            <a class="nav-link" href="new-business"> Business </a>
+          </li>
           <li class="nav-item">
             <a class="nav-link" href="accounts/login"> Login </a>
           </li>
           <li class="nav-item">
             <a class="nav-link" href="accounts/register"> Sign-up </a>
           </li>
+          
           {% endif %}
         </ul>
         <form class="d-flex">
