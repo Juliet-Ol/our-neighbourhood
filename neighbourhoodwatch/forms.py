@@ -7,8 +7,7 @@ from .models import Business, Post, Profile, Neighbourhood
 
 class NeighbourhoodForm(forms.ModelForm):
     class Meta:
-        model = Neighbourhood
-        
+        model = Neighbourhood        
         fields = '__all__'
 
 class ProfileForm(forms.ModelForm):
@@ -23,7 +22,7 @@ class ProfileForm(forms.ModelForm):
 class PostForm(forms.ModelForm):
     class Meta:
         model = Post
-        exclude = ['author', 'published_date']
+        exclude = ['author', 'published_date', 'neighbourhood']
         fields = '__all__'       
 
 class BusinessForm(forms.ModelForm):

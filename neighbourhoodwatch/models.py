@@ -4,13 +4,11 @@ from django.db import models
 from django.contrib.auth.models import User
 from cloudinary.models import CloudinaryField
 
-# from neighbourhoodwatch.views import business
-
-# from neighbourhoodwatch.views import neighbourhood
 
 class Neighbourhood(models.Model):
     name= models.CharField(max_length=100, blank=False)
     location = models.CharField(max_length=100, blank=False)
+    description =models.TextField(blank=False, null=True)
     housenumber =models.CharField(max_length=100, blank=False)
     admin = models.ForeignKey('Profile',
         on_delete=models.CASCADE,
@@ -65,8 +63,8 @@ class Post (models.Model):
         ordering = ['-published_date']  
 
     @classmethod
-    def display(cls):
-        posts = cls.objects.all()
+    def display(cls, currentNeighbourhoodId):
+        posts = cls.objects.filter(neighbourhood__id = currentNeighbourhoodId).all()
         return posts
 
     def save_posts(self):
