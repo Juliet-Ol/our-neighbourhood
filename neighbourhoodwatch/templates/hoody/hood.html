@@ -1,0 +1,31 @@
+
+
+
+{% extends  "neighbourhoodwatch/base.html" %}
+{% load bootstrap5 %}
+{% block content %}
+<div class="container">
+        
+    <div class="row">
+        {% for neighbourhood in neighbourhoods %}
+        <div class="col-md-4">
+            <div class="card mb-4" style="min-height:340px">
+                <div class="card-body">
+
+                    <h5 class="card-title">{{ neighbourhood.name }}  ({{neighbourhood.location}}) <span class="ml-4">{{neighbourhood.members.count}} member{{neighbourhood.members.count|pluralize}}</span></h5>
+                    <p class="card-text">{{neighbourhood.description}}</p>
+                    {% if request.user.profile.neighbourhood.id == neighbourhood.id %}
+                    
+                    <a href="leave-neighbourhood/{{ neighbourhood.id }}" class="waves-effect waves-light btn-small">Leave</a>
+                    {% else %}
+                    
+                    <a href="join-neighbourhood/{{ neighbourhood.id }}" class="waves-effect waves-light btn-small">Join neighbourhood</a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}
+
