@@ -9,7 +9,7 @@ from django.contrib.auth.decorators import login_required
 from .forms import BusinessForm,  PostForm, ProfileForm
 
 # Create your views here.
-
+@login_required(login_url='login')
 def index(request):
     profile_form=ProfileForm
     post_form=PostForm
@@ -191,51 +191,71 @@ def viewPost(request, id):
 
 
 
+def CreateBusiness(request):
+    if request.method=='POST':
+        form=BusinessForm(request.POST,request.FILES)
+        if form.is_valid():
+            business=form.save(commit=False)
+            business.admin=request.user.profile
+            business.save()
+            return redirect ('index')
+    else:
+        form=BusinessForm()
+    return render(request,'hoodq.html',{'form':form})
 
-def business(request):
-    form = BusinessForm
-    current_user = request.user
-    if request.method == 'POST':
+
+
+
+
+
+
+
+# def business(request):
+#     form = BusinessForm
+#     current_user = request.user
+#     if request.method == 'POST':
        
-        form = BusinessForm(request.POST, request.FILES)
+#         form = BusinessForm(request.POST, request.FILES)
         
-        if form.is_valid():
-            business = Business()
-            business.business_name = form.cleaned_data['business_name']
-            business.email = form.cleaned_data['email']
-            business.user = current_user
-            business.picture = form.cleaned_data['picture']
-            business.neighbourhood = request.user.profile.neighbourhood
-            business.save()
-            messages.success(request, 'Business registered')
+#         if form.is_valid():
+#             business=form.save(commit=False)
+#             business.admin=request.user.profile
+#             business = Business()
+#             business.business_name = form.cleaned_data['business_name']
+#             business.email = form.cleaned_data['email']
+#             business.user = current_user
+#             business.picture = form.cleaned_data['picture']
+#             business.neighbourhood = request.user.profile.neighbourhood
+#             business.save()
+#             messages.success(request, 'Business registered')
 
-            return redirect ('index')
-        else:
-            return render(request, 'business/new_business.html', {'form': form})
+#             return redirect ('index')
+#         else:
+#             return render(request, 'business/new_business.html', {'form': form})
 
-    else:
-        return render(request, 'business/new_business.html', {'form': form})    
+#     else:
+#         return render(request, 'business/new_business.html', {'form': form})    
 
-def editBusiness(request, id):
-    business = get_object_or_404(Business, pk=id)
-    form = BusinessForm(instance=business)
-    if request.method == 'POST':
+# def editBusiness(request, id):
+#     business = get_object_or_404(Business, pk=id)
+#     form = BusinessForm(instance=business)
+#     if request.method == 'POST':
         
-        form = BusinessForm(request.POST, request.FILES)
+#         form = BusinessForm(request.POST, request.FILES)
         
-        if form.is_valid():
-            business.business_name = form.cleaned_data['business_name']
-            business.user = form.cleaned_data['user']
-            business.picture = form.cleaned_data['picture']
-            business.save()
-            messages.success(request, 'Business edited')
+#         if form.is_valid():
+#             business.business_name = form.cleaned_data['business_name']
+#             business.user = form.cleaned_data['user']
+#             business.picture = form.cleaned_data['picture']
+#             business.save()
+#             messages.success(request, 'Business edited')
 
-            return redirect ('index')
-        else:
-            return render(request, 'business/edit_business.html', {'form': form, 'businessId': business.id})
+#             return redirect ('index')
+#         else:
+#             return render(request, 'business/edit_business.html', {'form': form, 'businessId': business.id})
 
-    else:
-        return render(request, 'business/edit_business.html', {'form': form, 'businessId': business.id})    
+#     else:
+#         return render(request, 'business/edit_business.html', {'form': form, 'businessId': business.id})    
 
 
 # def viewBusiness(request, id):
