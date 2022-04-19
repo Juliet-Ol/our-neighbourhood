@@ -67,7 +67,7 @@ def neighbourhoods(request):
 
 def join_neighbourhood(request, id):
     neighbourhood = get_object_or_404(Neighbourhood, pk=id)
-    print(request.user)
+    
     request.user.profile.neighbourhood = neighbourhood
     request.user.profile.save()
     return redirect('/hood')
@@ -198,7 +198,7 @@ def CreateBusiness(request):
             business=form.save(commit=False)
             business.admin=request.user.profile
             business.save()
-            return redirect ('index')
+            return redirect ('new_business')
     else:
         form=BusinessForm()
     return render(request,'business/try.html',{'form':form})
@@ -210,81 +210,4 @@ def business(request):
 
 
 
-
-
-
-
-
-# def business(request):
-#     form = BusinessForm
-#     current_user = request.user
-#     if request.method == 'POST':
-       
-#         form = BusinessForm(request.POST, request.FILES)
-        
-#         if form.is_valid():
-#             business=form.save(commit=False)
-#             business.admin=request.user.profile
-#             business = Business()
-#             business.business_name = form.cleaned_data['business_name']
-#             business.email = form.cleaned_data['email']
-#             business.user = current_user
-#             business.picture = form.cleaned_data['picture']
-#             business.neighbourhood = request.user.profile.neighbourhood
-#             business.save()
-#             messages.success(request, 'Business registered')
-
-#             return redirect ('index')
-#         else:
-#             return render(request, 'business/new_business.html', {'form': form})
-
-#     else:
-#         return render(request, 'business/new_business.html', {'form': form})    
-
-# def editBusiness(request, id):
-#     business = get_object_or_404(Business, pk=id)
-#     form = BusinessForm(instance=business)
-#     if request.method == 'POST':
-        
-#         form = BusinessForm(request.POST, request.FILES)
-        
-#         if form.is_valid():
-#             business.business_name = form.cleaned_data['business_name']
-#             business.user = form.cleaned_data['user']
-#             business.picture = form.cleaned_data['picture']
-#             business.save()
-#             messages.success(request, 'Business edited')
-
-#             return redirect ('index')
-#         else:
-#             return render(request, 'business/edit_business.html', {'form': form, 'businessId': business.id})
-
-#     else:
-#         return render(request, 'business/edit_business.html', {'form': form, 'businessId': business.id})    
-
-
-# def viewBusiness(request, id):
-#     business = get_object_or_404(Business, pk=id)
-    
-
-#     return render(request, 'neighbourhoodwatch/show.html', {
-#         'business': business,
-       
-#     }) 
-
-
-
-    
-
-
-
-   
-            
-      
-        
-      
-
-
-
-        
 
