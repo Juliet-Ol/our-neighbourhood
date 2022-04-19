@@ -15,7 +15,7 @@ urlpatterns = [
     path('leave-neighbourhood/<int:id>', views.leave_neighbourhood, name='leave_neighbourhood'),
     path('join-neighbourhood/<int:id>', views.join_neighbourhood, name='join_neighbourhood'),
    
-    path('business', views.CreateBusiness, name='new-business'),
+    path('business', views.business, name='business'),
     # path('edit-business/<int:id>', views.editBusiness, name='edit-business'),
     # path('view-business/<int:id>', views.viewBusiness, name="view-busines"),
     path('view-post/<int:id>', views.viewPost, name="view-post"),

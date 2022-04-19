@@ -201,7 +201,12 @@ def CreateBusiness(request):
             return redirect ('index')
     else:
         form=BusinessForm()
-    return render(request,'hoodq.html',{'form':form})
+    return render(request,'business/try.html',{'form':form})
+
+
+def business(request):
+    business=Business.objects.all()
+    return render (request, 'business/try.html', {'business':business})    
 
 
 

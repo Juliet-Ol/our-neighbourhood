@@ -1,0 +1,26 @@
+
+{% extends  "neighbourhoodwatch/base.html" %}
+{% load bootstrap5 %}
+{% block content %}
+<h1>This is where we post business</h1>
+
+
+<div class="row">
+    {% for business in business %}
+    <div class="col-md-4">
+        <div class="card my-2">
+            <div class="card-body">
+                <img class="account-img" style="width: 50%;" src=" {{ business.picture.url }} " alt="">
+                <h5 class="card-title">{{ business.business_name }}
+                </h5>
+                <p class="card-text">{{business.neighbourhood }}</p>
+                <p class="card-text">{{business.user }} </p>
+                <p class="card-text">{{business.description }}</p>
+                <p class="card-text">Owner: <small class="text-muted">
+                    {{ bussiness.user.user.username|title }}</small></p>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}
