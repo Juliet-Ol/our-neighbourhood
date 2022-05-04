@@ -2,6 +2,7 @@
 
 Neighbourhood Watch is a django app where a resident of a particular neighbourhood gets to know what is happening in their surrounding. 
 
+![login](https://user-images.githubusercontent.com/95286949/166672372-9c4741e5-cbdf-44d6-adfe-a4e581d12838.png)
 
 ## Requirements
 The user can perform the following functions:
